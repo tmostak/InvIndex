@@ -11,9 +11,13 @@ class InvIndex {
             vector <int> overflow;
             boost::mutex mutex;
         };
-        vector <WordInfo *> wordVec; // makes overhead of storing a lot of these neglibible
+        typedef map <string, int> WordMap;
+        WordMap wordMap;
+        vector <WordInfo *> wordVec; // makes overhead of storing a lot of these neglibible - idea is not to resize as then we have to lock to check
 
         boost::mutex vecMutex; // to resize vec
+        boost::mutex wordMapMutex; // to resize vec
+        int maxWordId;
             
         //vector <boost::dynamic_bitset> bitsets;
         //vector <vector<int> > overflow;
@@ -22,7 +26,7 @@ class InvIndex {
     public:
         InvIndex(const size_t arraySize);
         insertDoc(int docId, const vector <int> &wordIds);
-        insertDoc(int docId, const vector <string> words); // will need map to do this
+        insertDoc(int docId, const vector <string> &words); // will need map to do this
 
 
 

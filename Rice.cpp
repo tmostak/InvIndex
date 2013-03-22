@@ -1,13 +1,10 @@
 #include "Rice.h"
+#include <iostream> 
+using namespace std;
 
-Rice::Rice(): prevValue(0), v(0), offset(0) {};
-
-
-void Rice::writeChunkToMem() {
-    encodedData.push_back(v);
-    offset = 0;
+Rice::Rice(): prevValue(0), offset(0) {
+    encodedData.push_back(0);
 }
-
 
 size_t Rice::size() {
     return (encodedData.size() - 1)  * 8 + offset; 
@@ -26,14 +23,19 @@ void Rice::writeR(const int r) {
 }
     
 
-void Rice::riceEncode (const unsigned int *data, const size_t len, vector <unsigned char> &output, int &M) {
+void Rice::riceEncode (const unsigned int *data, const size_t len, const int M) {
+    int m;
     if (M < 0)
-        M = determineM(data, len);
-    remainderBits = log2(M) - 1;
+        m = determineM(data, len);
+    else 
+        m = M;
+
+
+    remainderBits = log2(m);
     for (size_t i = 0; i != len; ++i) {
         int diff = data[i] - prevValue;
-        int q = diff / M; // quotient
-        int r = diff - q*M; // remainder (faster than modulo?)
+        int q = diff / m; // quotient
+        int r = diff - q*m; // remainder (faster than modulo?)
         // Now write out quotient in unary (q-length string of 1s and then 0)
         writeQ(q);
         writeR(r);

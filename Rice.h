@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -49,6 +50,32 @@ class Rice {
             float prob = len / float(range);
             return determineM(prob);
         }
+
+        inline int determineMedian(const unsigned int *data, const size_t len) {
+            float median;
+            vector <unsigned int> diffs(len);
+            diffs[0] = data[0]; 
+            for (unsigned int d = 1; d != len; d++)
+                diffs[d] = data[d] - data[d-1];
+            std::sort(diffs.begin(),diffs.end());
+            int index = (len-1)/2;
+
+            if (len % 2 == 1) // if odd
+                median = diffs[(len-1)/2];
+            else // even
+                median = (diffs[(len-1)/2] + diffs[len/2]) / 2.0;
+            //cout << "Median: " << median << endl;
+
+            return determineM(1.0/median);
+        }
+
+
+                
+            
+
+
+
+
         
         Rice();
         size_t size();

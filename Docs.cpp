@@ -14,34 +14,35 @@ int Docs::readFile() {
     ifstream inFile (fileName.c_str(), ios::in|ios::binary|ios::ate);
     if (!inFile.is_open())
         return 1;
-    char *memBlock;
     ifstream::pos_type fileSize;
 
     fileSize = inFile.tellg(); // in bytes
-    memBlock = new unsigned int [fileSize / 4];
-
-
-
+    rawMem = new unsigned int [fileSize / sizeof(unsigned int)];
     inFile.seekg(0,ios::beg);
-    inFile.read(rawMem,fileSize);
+    inFile.read((char *) rawMem,fileSize);
     numDocs = rawMem [0];
-    offsets = (unsigned int *) memBlock + sizeof(unsigned int);
-    data = (unsigned int *) memBlock + sizeof(unsigned int *) * (numDocs + 1);
+    offsets = rawMem + 1;
+    data = rawMem + (numDocs + 1);
+
+    //offsets = (unsigned int *) memBlock + sizeof(unsigned int);
+    //data = (unsigned int *) memBlock + sizeof(unsigned int *) * (numDocs + 1);
 
     inFile.close();
 }
 
-void Docs::printData() {
-    cout << "# Docs: " << numDocs << endl;
-    for (int i = 0; i != 10; i++) {
-        cout << offsets[i] << endl;
-    }
-    for (int i = 0; i != 10; i++) {
-        cout << *(data+i) << endl;
+void Docs::printDoc(const unsigned int docNum) {
+    for (unsigned int featureNum = offsets[docNum]; featureNum != offsets[docNum+1]; featureNum++) {
+        cout << data[featureNum] << " ";
+        cout << endl;
     }
 }
 
+void Docs::getDoc(const unsigned int docNum, unsigned int * &dataPtr, size_t &dataSize) {
+    dataPtr = data + offsets[docNum];
+    dataSize = offsets[docNum + 1] - offsets[docNum]; 
+}
+    
 Docs::~Docs() {
-    delete [] data;
+    delete [] rawMem;
 }
 

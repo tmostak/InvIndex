@@ -25,10 +25,14 @@ void Rice::writeR(const int r) {
 
 void Rice::riceEncode (const unsigned int *data, const size_t len, const int M) {
     int m;
-    if (M < 0)
-        m = determineM(data, len);
+    if (M < 0) {
+        m = determineMedian(data, len);
+        //m = determineM(data, len);
+    }
     else 
         m = M;
+
+    //cout << "M: " << m << endl;
 
 
     remainderBits = log2(m);

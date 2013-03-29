@@ -21,11 +21,8 @@ class Rice {
         void writeQ(const int q); 
         void writeR(const int r);
         inline void writeBit(const bool bit) {
-            //cout << "Bit: " << bit << endl;
-            
             if (bit)
                 encodedData.back() |= 1 << offset; // turn offset bit on 
-            
             incOffset();
         }
 

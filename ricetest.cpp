@@ -21,13 +21,14 @@ void genRandVec(const unsigned int maxRange, const float p, vector <unsigned int
 }
 
 int main () {
-    ofstream outFile ("rice_results.csv");
+    ofstream outFile ("rice_results_full_tiny.csv");
     srand (time (NULL) );
     const unsigned int vecMax = 10000000;
     const int numTrials = 10;
    
-    for (float p = 0.002; p <= 0.4; p += 0.002) {
+    for (float p = 0.00001; p <= 0.0001; p += 0.00001) {
         float compression = 0.0;
+        float bitCompression = 0.0;
         for (int i = 0; i != numTrials; i++) {
             vector <unsigned int> data;
             genRandVec(vecMax, p, data);
@@ -37,10 +38,13 @@ int main () {
             //int riceBits = 1000;
             int origBits = data.size() * 32.0;
             float ratio = origBits / float(riceBits);
+            float bitRatio = vecMax / float(riceBits);
             compression += ratio;
+            bitCompression += bitRatio;
         }
         compression /= numTrials;
-        outFile << boost::lexical_cast<string>(p) << "," << boost::lexical_cast<string>(compression) << endl;
+        bitCompression /= numTrials;
+        outFile << boost::lexical_cast<string>(p) << "," << boost::lexical_cast<string>(compression) << "," << boost::lexical_cast <string> (bitCompression) << endl;
         //cout << p << "," << compression << endl;
         //cout << p << ": " << riceBits << " " << origBits << " " << ratio << endl;
     }

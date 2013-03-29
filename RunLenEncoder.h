@@ -7,8 +7,9 @@ template <typename T> class RLIterator;
 template <typename T> class RunLenEncoder {
 
     private:
-        
-        unsigned char *compressedData;
+        std::vector <unsigned char> encodedData; 
+        T prevValue;
+        //unsigned char *compressedData;
         size_t dataLen;
         T lastVal;
 

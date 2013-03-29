@@ -20,13 +20,9 @@ int Docs::readFile() {
     rawMem = new unsigned int [fileSize / sizeof(unsigned int)];
     inFile.seekg(0,ios::beg);
     inFile.read((char *) rawMem,fileSize);
-    numDocs = rawMem [0];
+    numDocs = rawMem [0] - 1;
     offsets = rawMem + 1;
-    data = rawMem + (numDocs + 1);
-
-    //offsets = (unsigned int *) memBlock + sizeof(unsigned int);
-    //data = (unsigned int *) memBlock + sizeof(unsigned int *) * (numDocs + 1);
-
+    data = rawMem + (numDocs + 2);
     inFile.close();
 }
 

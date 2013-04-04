@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -37,6 +38,16 @@ void Docs::getDoc(const unsigned int docNum, unsigned int * &dataPtr, size_t &da
     dataPtr = data + offsets[docNum];
     dataSize = offsets[docNum + 1] - offsets[docNum]; 
 }
+
+void Docs::sortDoc(const unsigned int docNum) {
+    sort(data+offsets[docNum], data+offsets[docNum+1]);
+}
+
+void Docs::sortDocs() {
+    for (int d = 0; d != numDocs; ++d)
+        sortDoc(d);
+}
+    
     
 Docs::~Docs() {
     delete [] rawMem;

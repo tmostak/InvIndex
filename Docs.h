@@ -16,6 +16,8 @@ class Docs {
     public:
         Docs(const std::string &_fileName);
         ~Docs();
+        void sortDoc(const unsigned int docNum);
+        void sortDocs(); // sorts all docs
         void printDoc(const unsigned int docNum);
         void getDoc(const unsigned int docNum, unsigned int * &dataPtr, size_t &dataSize);
         inline unsigned int getNumDocs() {return numDocs;}

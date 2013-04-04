@@ -10,9 +10,9 @@ int main(int argc, char *argv[]) {
     else {
         cout << endl; 
         for (int d = 1; d != argc; ++d) {
-            cout << argv[d] << endl;
             Docs docs(argv[d]);
             unsigned int numDocs = docs.getNumDocs();
+            docs.sortDocs();
             unsigned int unCompBits = 0;
             unsigned int compBits = 0;
             unsigned int numItems = 0;
@@ -20,6 +20,8 @@ int main(int argc, char *argv[]) {
                 unsigned int *data;
                 size_t dataSize;
                 docs.getDoc(i, data, dataSize);
+                //for (int s = 0; s != dataSize; s++)
+                //    cout << data[s] << endl;
                 if (dataSize > 1) { // doc 41762 is one with all empty tweets
                     
                     Rice rice;
@@ -39,6 +41,7 @@ int main(int argc, char *argv[]) {
             }
             float finalRatio = unCompBits / float(compBits);
             cout << argv[d] << ": " << endl;
+            cout << "Num docs: " << numDocs << endl;
             cout << "Total items: " << numItems << endl;
             cout << "Original size: " << numItems*4 << endl;
             cout << "Final Size: " << compBits / 8 << endl;
